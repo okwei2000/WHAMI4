@@ -40,7 +40,15 @@ var app = {
         app.configureBackgroundGeoLocation();
     },
     log: function(message){
-        var m = $('<div>').addClass('alert alert-success').html(message);
+        var currentdate = new Date(); 
+        var datetime = currentdate.getFullYear() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getDate() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+                
+        var m = $('<div>').addClass('alert alert-success').html(datetime+": "+message);
         $('#log').prepend(m);
     },
     startTracking: function(){
@@ -65,7 +73,7 @@ var app = {
         * This callback will be executed every time a geolocation is recorded in the background.
         */
         var callbackFn = function(location) {
-            app.log('Location:  ' + location.latitudue + ',' + location.longitude);	
+            app.log('Location:  ' + location.latitude + ',' + location.longitude);	
             ////
             // IMPORTANT:  You must execute the #finish method here to inform the native plugin that you're finished,
             //  and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
