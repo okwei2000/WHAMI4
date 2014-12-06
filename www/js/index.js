@@ -53,6 +53,8 @@ var app = {
             app.log('Location from Phonegap');
         });
         var bgGeo = window.plugins.backgroundGeoLocation;
+        alert("bgGeo: "+bgGeo);
+        app.log("bgGeo: "+bgGeo);
         /**
         * This would be your own callback for Ajax-requests after POSTing background geolocation to your server.
         */
@@ -70,7 +72,7 @@ var app = {
         * This callback will be executed every time a geolocation is recorded in the background.
         */
         var callbackFn = function(location) {
-            console.log('[js] BackgroundGeoLocation callback:  ' + location.latitudue + ',' + location.longitude);			
+            app.log('[js] BackgroundGeoLocation callback:  ' + location.latitudue + ',' + location.longitude);			
 			var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/tickits';
 			$.ajax({
 				url: manualTickitUrl,
@@ -104,9 +106,10 @@ var app = {
         };
 
         var failureFn = function(error) {
-            console.log('BackgroundGeoLocation error');
+            app.log('BackgroundGeoLocation error');
         }
         
+        app.log('ToConfigure');
         // BackgroundGeoLocation is highly configurable.
         bgGeo.configure(callbackFn, failureFn, {
             url: 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/tickits', // <-- only required for Android; ios allows javascript callbacks for your http
@@ -130,6 +133,7 @@ var app = {
             debug: true     // <-- enable this hear sounds for background-geolocation life-cycle.
         });
         
+        app.log('ToStart');
         bgGeo.start();
     }
 };
