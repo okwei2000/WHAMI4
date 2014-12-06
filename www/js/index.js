@@ -34,82 +34,48 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.log('Device Ready');
-        app.receivedEvent('deviceready');
-        
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
+        $('#btn-start').on('click', app.startTracking);
+        $('#btn-stop').on('click', app.stopTracking);
+        StatusBar.overlaysWebView(false);
         app.configureBackgroundGeoLocation();
-    },    
+    },
     log: function(message){
         var m = $('<div>').addClass('alert alert-success').html(message);
         $('#log').prepend(m);
     },
-    
+    startTracking: function(){
+		var bgGeo = window.plugins.backgroundGeoLocation;
+		bgGeo.start();        
+    },
+    stopTracking: function(){
+		var bgGeo = window.plugins.backgroundGeoLocation;
+		bgGeo.stop();       
+    },
     configureBackgroundGeoLocation: function() {
         // Your app must execute AT LEAST ONE call for the current position via standard Cordova geolocation,
         //  in order to prompt the user for Location permission.
         window.navigator.geolocation.getCurrentPosition(function(location) {
-            app.log('Location from Phonegap');
+            app.log('First Location Request');
         });
         var bgGeo = window.plugins.backgroundGeoLocation;
-        alert("bgGeo: "+bgGeo);
-        app.log("bgGeo: "+bgGeo);
-        /**
-        * This would be your own callback for Ajax-requests after POSTing background geolocation to your server.
-        */
-        var yourAjaxCallback = function(response) {
-            ////
-            // IMPORTANT:  You must execute the #finish method here to inform the native plugin that you're finished,
-            //  and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
-            // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-            //
-            bgGeo.finish();
-            //document.getElementById('app').innerHTML += "yourAjaxCallback is called <br>";
-        };
 
         /**
         * This callback will be executed every time a geolocation is recorded in the background.
         */
         var callbackFn = function(location) {
-            app.log('[js] BackgroundGeoLocation callback:  ' + location.latitudue + ',' + location.longitude);			
-			var manualTickitUrl = 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/tickits';
-			$.ajax({
-				url: manualTickitUrl,
-				type: "POST",
-				dataType: 'json',
-				cache: false,
-				contentType: "application/json; charset=utf-8",
-				processData: false,
-				data: {                                         
-					emailId: "kevin.wei@qdevinc.com",
-					tickitType: "11",
-					tickitStatus: "1",
-					ip: "1.1.1.1",
-					recipient: "chris@abc.com",
-					subject: "WHAMI2 AUTO GPS",
-					msgBody: ""+(new Date()).toLocaleString(),
-					location: {
-						longitude: location.latitudue,
-						latitude: location.longitude
-					}
-				},
-				success: function( data, textStatus, jqXHR ){
-					//alert('registration id = '+e.regid);
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-				},
-				complete: function(){
-				}
-			});
-			yourAjaxCallback.call(this);
+            app.log('Location:  ' + location.latitudue + ',' + location.longitude);	
+            ////
+            // IMPORTANT:  You must execute the #finish method here to inform the native plugin that you're finished,
+            //  and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
+            // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+            //
+            bgGeo.finish();            
         };
 
         var failureFn = function(error) {
             app.log('BackgroundGeoLocation error');
         }
         
-        app.log('ToConfigure');
         // BackgroundGeoLocation is highly configurable.
         bgGeo.configure(callbackFn, failureFn, {
             url: 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/tickits', // <-- only required for Android; ios allows javascript callbacks for your http
@@ -133,7 +99,6 @@ var app = {
             debug: true     // <-- enable this hear sounds for background-geolocation life-cycle.
         });
         
-        app.log('ToStart');
-        bgGeo.start();
+        app.log('GeoTracking Configured');
     }
 };
