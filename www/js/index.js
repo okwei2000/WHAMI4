@@ -46,10 +46,12 @@ var app = {
     startTracking: function(){
 		var bgGeo = window.plugins.backgroundGeoLocation;
 		bgGeo.start();        
+        app.log('Tracking Started');
     },
     stopTracking: function(){
 		var bgGeo = window.plugins.backgroundGeoLocation;
-		bgGeo.stop();       
+		bgGeo.stop();  
+        app.log('Tracking Stopped');        
     },
     configureBackgroundGeoLocation: function() {
         // Your app must execute AT LEAST ONE call for the current position via standard Cordova geolocation,
