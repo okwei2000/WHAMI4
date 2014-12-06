@@ -36,6 +36,7 @@ var app = {
         app.log('Device Ready');
         $('#btn-start').on('click', app.startTracking);
         $('#btn-stop').on('click', app.stopTracking);
+        $('#btn-stop').attr('disabled', 'disabled');
         StatusBar.overlaysWebView(false);
         app.configureBackgroundGeoLocation();
     },
@@ -53,13 +54,17 @@ var app = {
     },
     startTracking: function(){
 		var bgGeo = window.plugins.backgroundGeoLocation;
-		bgGeo.start();        
+		bgGeo.start();
         app.log('Tracking Started');
+        $('#btn-start').attr('disabled', 'disabled'); 
+        $('#btn-stop').removeAttr('disabled');        
     },
     stopTracking: function(){
 		var bgGeo = window.plugins.backgroundGeoLocation;
 		bgGeo.stop();  
-        app.log('Tracking Stopped');        
+        app.log('Tracking Stopped');
+        $('#btn-stop').attr('disabled', 'disabled'); 
+        $('#btn-start').removeAttr('disabled');        
     },
     configureBackgroundGeoLocation: function() {
         // Your app must execute AT LEAST ONE call for the current position via standard Cordova geolocation,
