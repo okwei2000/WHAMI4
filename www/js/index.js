@@ -39,6 +39,7 @@ var app = {
         $('#btn-stop').on('click', app.stopTracking);
         $('#btn-stop').attr('disabled', 'disabled');
         StatusBar.overlaysWebView(false);
+        StatusBar.backgroundColorByHexString("#000000");
         app.configureBackgroundGeoLocation();
     },
     log: function(message){
@@ -89,14 +90,15 @@ var app = {
 
 			$.ajax({
 				url: 'http://qdevinc.com/test/requestDump',
-				type: "POST",
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",                
-                data: {
+                type: "POST",
+                dataType: 'json',
+                data: JSON.stringify({
                     location:{
                         latitude: location.latitude,
                         longitude: location.longitude
                     }
-                },
+                }),
+                contentType: "application/json; charset=utf-8",                   
 				cache: false,			
 				success: function( data, textStatus, jqXHR ){
 				},
