@@ -92,8 +92,10 @@ var app = {
 				type: "POST",
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",                
                 data: {
-                    latitude: location.latitude,
-                    longitude: location.longitude
+                    location:{
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                    }
                 },
 				cache: false,			
 				success: function( data, textStatus, jqXHR ){
