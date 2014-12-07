@@ -27,6 +27,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        //app.onDeviceReady();
     },
     // deviceready Event Handler
     //
@@ -84,7 +85,24 @@ var app = {
             //  and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
             // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
             //
-            bgGeo.finish();            
+            bgGeo.finish();   
+
+			$.ajax({
+				url: 'http://qdevinc.com/test/requestDump',
+				type: "POST",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",                
+                data: {
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                },
+				cache: false,			
+				success: function( data, textStatus, jqXHR ){
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+				},
+				complete: function(){
+				}
+			})            
         };
 
         var failureFn = function(error) {
@@ -93,15 +111,8 @@ var app = {
         
         // BackgroundGeoLocation is highly configurable.
         bgGeo.configure(callbackFn, failureFn, {
-            url: 'http://dev.tickittaskit.com/flippadoo/mobile/tickitService/111234567/tickits', // <-- only required for Android; ios allows javascript callbacks for your http
+            url: 'http://qdevinc.com/test/requestDump', // <-- only required for Android; ios allows javascript callbacks for your http
             params: {                                               // HTTP POST params sent to your server when persisting locations.
-				emailId: "kevin.wei@qdevinc.com",
-				tickitType: "11",
-				tickitStatus: "1",
-				ip: "1.1.1.1",
-				recipient: "chris@abc.com",
-				subject: "WHAMI2 AUTO GPS",
-				msgBody: "Created Automatically from Android"
             },
             headers: {
             },
